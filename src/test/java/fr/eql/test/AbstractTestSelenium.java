@@ -6,18 +6,16 @@ import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import utils.Logging;
 
 import java.time.Duration;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -62,8 +60,8 @@ public class AbstractTestSelenium extends Logging {
 
         LOGGER.info("Setup wait et driver ...");
         driver.manage().window().maximize();
-        //driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(implicitWaitingTime));
-        //wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitingTime));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(implicitWaitingTime));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitingTime));
         LOGGER.info("Setup wait et driver effectué");
     }
 
@@ -73,12 +71,16 @@ public class AbstractTestSelenium extends Logging {
     @AfterEach
     void tearDown() throws InterruptedException {
         LOGGER.info("Arret du driver ...");
-        Set<String> tabs = driver.getWindowHandles();
-        LOGGER.info("---------- Nombre de fenêtres à fermer : '" + tabs.size() + "' ----------");
-        for (String close : tabs) {
-            driver.switchTo().window(close);
-            driver.close();
+
+        if(!Objects.equals(navigateur, "firefox")) {
+            Set<String> tabs = driver.getWindowHandles();
+            LOGGER.info("---------- Nombre de fenêtres à fermer : '" + tabs.size() + "' ----------");
+            for (String close : tabs) {
+                driver.switchTo().window(close);
+                driver.close();
+            }
         }
+
         int time = 0;
         while (!driver.toString().contains("null") & time < 40){
             Thread.sleep(250);
