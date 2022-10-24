@@ -2,6 +2,7 @@ package fr.eql.test;
 
 import org.junit.jupiter.api.AfterEach;
 import org.openqa.selenium.NoSuchSessionException;
+import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -31,9 +32,8 @@ public class AbstractTestSelenium extends Logging {
     protected int explicitWaitingTime = 10;
 
     //
-    String navigateur = "Firefox";
+    String navigateur = "firefox";
 
-/*
     AbstractTestSelenium(){
         LOGGER.info("Setup LOGGER ...");
         System.setProperty("logFileName", this.className);
@@ -43,38 +43,34 @@ public class AbstractTestSelenium extends Logging {
 
         switch (navigateur.toLowerCase()) {
             case "firefox" :
-                System.setProperty("webdriver.gecko.driver", "src/main/java/ressources/driver/geckodriver.exe");
+                System.setProperty("webdriver.gecko.driver", "src/main/resources/driver/geckodriver.exe");
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
                 firefoxOptions.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.ACCEPT);
+                firefoxOptions.setPageLoadStrategy(PageLoadStrategy.EAGER);
                 driver = new FirefoxDriver(firefoxOptions);
                 break;
             case "chrome" :
-                System.setProperty("webdriver.chrome.driver", "src/main/java/ressources/driver/chromedriver.exe");
-                ChromeOptions chromeoptions = new ChromeOptions();
-                chromeoptions.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.ACCEPT);
-                driver = new ChromeDriver(chromeoptions);
+                System.setProperty("webdriver.chrome.driver", "src/main/resources/driver/chromedriver.exe");
+                driver = new ChromeDriver();
                 break;
             case "edge" :
-                System.setProperty("webdriver.edge.driver", "src/main/java/ressources/driver/msedgedriver.exe");
-                EdgeOptions edgeOptions = new EdgeOptions();
-                edgeOptions.setCapability(CapabilityType.UNHANDLED_PROMPT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
-                driver = new EdgeDriver(edgeOptions);
+                System.setProperty("webdriver.edge.driver", "src/main/resources/driver/msedgedriver.exe");
+                driver = new EdgeDriver();
                 break;
         }
         LOGGER.info("Setup Choix driver " + navigateur + " effectué");
 
         LOGGER.info("Setup wait et driver ...");
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(implicitWaitingTime));
-        wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitingTime));
+        //driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(implicitWaitingTime));
+        //wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitingTime));
         LOGGER.info("Setup wait et driver effectué");
     }
 
 
 
- */
 
-    //@AfterEach
+    @AfterEach
     void tearDown() throws InterruptedException {
         LOGGER.info("Arret du driver ...");
         Set<String> tabs = driver.getWindowHandles();
