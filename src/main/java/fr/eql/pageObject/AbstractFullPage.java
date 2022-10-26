@@ -1,5 +1,6 @@
 package fr.eql.pageObject;
 
+import jdk.javadoc.internal.doclets.formats.html.markup.Head;
 import org.openqa.selenium.WebDriver;
 import utils.Logging;
 import utils.OutilsProjet;
@@ -13,6 +14,10 @@ public abstract class AbstractFullPage extends Logging {
 
     public AbstractFullPage(WebDriver driver) {
         this.driver = driver;
+    }
+
+    public HeaderPage getHeader(){
+        return new HeaderPage(driver);
     }
 
 

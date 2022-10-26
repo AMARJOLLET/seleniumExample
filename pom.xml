@@ -15,17 +15,13 @@
         <selenium.version>4.1.1</selenium.version>
         <junit.version>5.9.0</junit.version>
         <log4j2.version>2.19.0</log4j2.version>
+        <commons-io>2.11.0</commons-io>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>${selenium.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-support</artifactId>
             <version>${selenium.version}</version>
         </dependency>
         <dependency>
@@ -58,6 +54,11 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
             <version>${log4j2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io}</version>
         </dependency>
     </dependencies>
 </project>

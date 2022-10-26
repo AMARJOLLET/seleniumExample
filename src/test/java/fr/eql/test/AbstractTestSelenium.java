@@ -1,9 +1,6 @@
 package fr.eql.test;
 
 import org.junit.jupiter.api.AfterEach;
-import org.openqa.selenium.NoSuchSessionException;
-import org.openqa.selenium.PageLoadStrategy;
-import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -15,13 +12,10 @@ import org.slf4j.LoggerFactory;
 import utils.Logging;
 
 import java.time.Duration;
-import java.util.Objects;
-import java.util.Set;
 
 
 public class AbstractTestSelenium extends Logging {
     // LOGGER
-    public Logger LOGGER = LoggerFactory.getLogger(className);
 
     // Driver
     protected static WebDriver driver;
@@ -43,8 +37,6 @@ public class AbstractTestSelenium extends Logging {
             case "firefox" :
                 System.setProperty("webdriver.gecko.driver", "src/main/resources/driver/geckodriver.exe");
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
-                firefoxOptions.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.ACCEPT);
-                firefoxOptions.setPageLoadStrategy(PageLoadStrategy.EAGER);
                 driver = new FirefoxDriver(firefoxOptions);
                 break;
             case "chrome" :
@@ -69,29 +61,9 @@ public class AbstractTestSelenium extends Logging {
 
 
     @AfterEach
-    void tearDown() throws InterruptedException {
+    void tearDown() {
         LOGGER.info("Arret du driver ...");
-
-        if(!Objects.equals(navigateur, "firefox")) {
-            Set<String> tabs = driver.getWindowHandles();
-            LOGGER.info("---------- Nombre de fenêtres à fermer : '" + tabs.size() + "' ----------");
-            for (String close : tabs) {
-                driver.switchTo().window(close);
-                driver.close();
-            }
-        }
-
-        int time = 0;
-        while (!driver.toString().contains("null") & time < 40){
-            Thread.sleep(250);
-            try {
-                driver.quit();
-                break;
-            } catch (NoSuchSessionException e) {
-                LOGGER.debug("driver close too fast, NoSuchSessionException - Retry : " + (time+1));
-            }
-            time++;
-        }
+        driver.quit();
         LOGGER.info("Arret du driver effectué");
     }
 
